@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Title</title>
+  <style>
+        .divy { float: left;
+        line-height: 25px;
+         font-size: 20px;
+          color: white;
+           margin-top: 60px;
+           width: 220px;
+             margin-right: 10px;
+              text-align: center;
+              background-color:DarkGrey;
+             padding-top:10px;
+             padding-bottom:10px;
+          border-radius:10px;
+             color:black;
+          }
+    .y {
+    padding-top:10px;
+         color:red;
+        width: 80%;
+     margin-left: 10%;
+     margin-right: 10%;
+
+     }
+     .t{
+     text-decoration:none;
+      color:black;
+
+     }
+    .op{
+    width: 69%;
+    position:flex;
+     text-decoration:none;
+      color:black;
+      float: right;
+      background-color:DarkGrey;
+       border-radius:10px;
+       padding:10px;
+       font-size: 20px;
+
+     }
+
+    </style>
+</head>
+<body>
+<header class="p-3 bg-dark text-white">
+    <div class="">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="/main" class="nav-link px-2 text-secondary">Главная</a></li>
+
+          <li><a href="/main/books" class="nav-link px-2 text-white">Книги</a></li>
+            {% if user.is_superuser %}
+              <li><a href="/main/add" class="nav-link px-2 text-white">добавить</a></li>
+
+            {% endif %}
+
+
+
+
+        </ul>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          <input type="search" class="form-control form-control-dark" placeholder="поиск..." name="sr" aria-label="Search">
+        </form>
+
+        <div class="text-end">
+          {% if user.is_authenticated %}
+            <form  style="display: inline;"  method="post" action="{% url 'us:logout' %}">
+                {% csrf_token %}
+    <button type="submit" class="btn btn-outline-light me-2" >выход</button>
+            </form>
+            <a href=""><button type="button" class="btn btn-warning">{{user.username}}</button></a>
+            {% else %}   <a href="{% url 'us:log' %}"><button type="button" class="btn btn-outline-light me-2">вход</button> </a>
+            <a href="{% url 'us:reg' %}"><button type="button" class="btn btn-warning">регистрация</button></a>
+            {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+<div class="y">
+<p style="font-size: 50px; color:black">{{item.name}}</p>
+  <img src="{{item.img.url}}" alt="" width="30%" height="600" style="display: inline-block">
+
+<div class="op">
+  <p>{{item.description}} </p>
+  <div class="op" style="background-color:white;float: left;font-size: 30px; height:110px;line-height: 35px;width:auto">
+      <p>имеется в наличии: {{item.col}} </p>
+      <p>автор: {{item.author}} </p>
+  </div>
+ <a href="/main/{{item.id}}/t" ><button type="button"   class="btn btn-primary btn-lg" style="float: right;">Взять </button></a>
+    {% if user.is_superuser %}
+    <a href="/main/{{item.id}}/upd"><button type="button" class="btn btn-primary btn-lg" style="float: right; margin-right:10px">Изменить </button></a>
+
+               <a href="/main/{{item.id}}/del" > <button type="submit" class="btn btn btn-danger btn-lg" style="float: right; margin-right:10px">Удалить </button></a>
+
+
+    {% endif %}
+
+</div>
+
+  </div>
+
+</body>
+</html>
